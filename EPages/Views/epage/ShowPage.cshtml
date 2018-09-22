@@ -1,0 +1,264 @@
+﻿@{
+    ViewBag.Title = "ShowPage";
+    Layout = "~/Views/Shared/_MPage.cshtml";
+}
+
+<link href="@Url.Content("~/css/theme.css")" type="text/css" rel="stylesheet" />
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+@model EPages.ViewModel.PageViewModel
+
+<div class="stream-attachment photo" style="box-shadow: 0px 1px 7px #1B788A;">
+    <div class="responsive-photo">
+        <img src="~/images/@Model.CoverURL" alt="">
+    </div>
+</div>
+<ul class="widget widget-usage unstyled" id="ShopNames">
+    <li style="text-align: center;">
+        <div id="shopname">
+            <h2 style="color: white;"> @Model.title </h2>
+        </div>
+        <input id="pid" type="hidden" value="@Model.Page_ID" />
+      
+    </li>
+</ul>
+<div class="wrapper">
+    <div class="container">
+        <div class="spanme">
+            <div class="content">
+                <div class="module">
+                    <div class="module-body">
+
+                        <ul class="profile-tab nav nav-tabs">
+                            <li class=""><a href="#activity" data-toggle="tab">Information</a></li>
+                            <li class="active"><a href="#friends" data-toggle="tab">Products</a></li>
+                        </ul>
+                        <div class="profile-tab-content tab-content">
+                            <div class="tab-pane fade" id="activity">
+                                <div class="stream-list">
+                                    <div class="media stream">
+                                        <div class="module">
+                                            <div class="module-head">
+                                                <h3 style="display: inline-block;">
+                                                    AboutUS
+                                                </h3>
+                                            
+                                            </div>
+                                            <div class="module-body">
+                                                <p id="desc" style="max-width: 50%; text-align: justify;">
+                                                    @Model.Description 
+                                                      
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="module">
+                                            <div class="module-head">
+                                                <h3 style="display: inline-block;">
+                                                    Contact Details
+                                                </h3>
+                                             
+
+                                            </div>
+                                            <div class="module-body">
+                                                <div style="display: inline-block;">
+                                                    <dl>
+                                                        <dt>Address</dt>
+                                                        <dd id="addr">
+                                                            <p>   @Model.addressdetail.AddrDesc</p>
+                                                           
+                                                        </dd>
+                                                        <dt>Contact Number</dt>
+                                                        <dd id="cont">
+                                                            <p>  @Model.contactdetail.ContactDesc</p>
+                                                         
+                                                        </dd>
+                                                    </dl>
+                                                </div>
+
+                                                <div style="display: inline-block;" class="pull-right">
+                                                    <h3 style="color: white;">Join On</h3>
+                                                    <a href="@Model.socialinfo.FB" style="width: 20px; margin-right: 5%; height: 20px; padding: 4%; border-radius: 3px; border: 1px solid black;">
+                                                        <i class="icon-facebook"></i>
+                                                    </a>
+                                                    <a href="@Model.socialinfo.Twitter" style="width: 20px; margin-right: 5%; height: 20px; padding: 4%; border-radius: 3px; border: 1px solid black;">
+                                                        <i class="icon-twitter"></i>
+                                                    </a>
+                                                    <a href="@Model.socialinfo.LinkedIn" style="width: 20px; margin-right: 5%; height: 20px; padding: 4%; border-radius: 3px; border: 1px solid black;">
+                                                        <i class="icon-linkedin"></i>
+                                                    </a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/.stream-list-->
+                            </div>
+                            <div class="tab-pane fade active in" id="friends">
+                                @*<div class="module-option clearfix">
+                                    <form>
+                                        <div class="input-append pull-left">
+                                            <input class="span3" placeholder="Filter by name..." type="text">
+                                            <button type="submit" class="btn">
+                                                <i class="icon-search"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>*@
+
+
+                                <div class="module-body" id="iit">
+                                  
+                             
+                                    <br>
+                             
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.module-body-->
+                </div>
+                <!--/.module-->
+            </div>
+            <!--/.content-->
+        </div>
+    </div>
+    <!--/.content-->
+
+</div>
+<!--/.wrapper-->
+
+
+
+
+
+
+<div id="toPopup">
+
+    <div class="close"></div>
+    <span class="ecs_tooltip">Press Esc to close <span class="arrow"></span></span>
+    <div id="popup_content">
+        <!--your content start------->
+      @using (Html.BeginForm("addtolist", "epage", FormMethod.Post, new { @class = "form-vertical" }))
+      {
+          <div class="module-body">
+          <div class="control-group">
+            <input type="hidden" id="itid" value="" name="itid" />
+              <input type="hidden" name="pgid" value="@Model.Page_ID" />
+            <label class="control-label">Quantity</label>
+            <div class="controls" style="display:inline-block;">
+                <input type="number" class="span12" name="quantity"  style="width:100px;" />
+            </div>
+        </div>
+              <div class="control-group" style="display:inline-block;">
+                  <input type="submit" class="btn btn-primary" value="Add to list"/>
+              </div>
+        </div>
+      }
+      
+    </div> <!--your content end-->
+
+</div> <!--toPopup end-->
+
+<div class="loader"></div>
+<div id="backgroundPopup"></div>
+
+
+
+
+@section Mfooter{
+    <script type="text/javascript">
+        $('.additem').hide();
+        $("#hidennav").text("Check Out");
+
+        $('#some').autocomplete({
+            source: '@Url.Action("Autocomplete","epage")'
+        });
+        window.onload = mytim();
+
+        $c = 2;
+        $ii = 0;
+        var itemid = -1;
+        function mytim() {
+            setTimeout(function () {
+                var $pgid = $("#pid").val();
+                $.getJSON('/api/FetchWA/GItems/' + $pgid, function (Data) {
+                    $('#iit').empty();
+                    $(Data).each(function (i, item) {
+                        if ($c == 2) {
+                            $ii = i;
+                            $('#iit').append('<div class="row-fluid" id="' + $ii + '"><div class="span6"><div class="media user"><a class="media-item pull-left" href="#"><img src="/images/' + item.ItemPic + '"></a><div class="media-body"><h3 class="media-title" style="color: white;">' + item.ItemName + '</h3><p><small class="muted">' + item.ItemDesc + '</small></p><h5 style="text-decoration: underline; color: white;">Quantity ' + item.ItemQuantity + '</h5><h5 style="text-decoration: underline; color: white;">Price:' + item.ItemPrice + '$</h5><div class="media-option btn-group shaded-icon"><input type="button" class="btn" id="' + item.ItemID + '" onclick="delm(this)" value="Order Now" /></div></div></div></div></div>');
+                            $c = $c - 1;
+                        } else {
+                            $('#' + $ii).append('<div class="span6"><div class="media user"><a class="media-item pull-left" href="#"><img src="' + "/images/" + item.ItemPic + '"></a><div class="media-body"><h3 class="media-title" style="color: white;">' + item.ItemName + '</h3><p><small class="muted">' + item.ItemDesc + '</small></p><h5 style="text-decoration: underline; color: white;">Quantity ' + item.ItemQuantity + '</h5><h5 style="text-decoration: underline; color: white;">Price:' + item.ItemPrice + '$</h5><div class="media-option btn-group shaded-icon"><input type="button" class="btn" id="' + item.ItemID + '" onclick="delm(this)" value="Order Now"/></div></div></div></div>');
+                            $c = 2;
+                        }
+                    })
+                });
+            }, 1000);
+        }
+
+        function delm(data) {
+            itemid = $(data).attr('id');
+            $('#itid').val(itemid);
+            loading(); // loading
+            setTimeout(function () { // then show popup, deley in .5 second
+                loadPopup(); // function show popup
+            }, 500); // .5 second
+        }
+           
+            /* event for close the popup */
+            $("div.close").hover(
+                            function () {
+                                $('span.ecs_tooltip').show();
+                            },
+                            function () {
+                                $('span.ecs_tooltip').hide();
+                            }
+                        );
+
+            $("div.close").click(function () {
+                disablePopup();  // function close pop up
+            });
+
+            $(this).keyup(function (event) {
+                if (event.which == 27) { // 27 is 'Ecs' in the keyboard
+                    disablePopup();  // function close pop up
+                }
+            });
+
+            $("div#backgroundPopup").click(function () {
+                disablePopup();  // function close pop up
+            });
+
+           
+            /************** start: functions. **************/
+            function loading() {
+                $("div.loader").show();
+            }
+            function closeloading() {
+                $("div.loader").fadeOut('normal');
+            }
+
+            var popupStatus = 0; // set value
+
+            function loadPopup() {
+                if (popupStatus == 0) { // if value is 0, show popup
+                    closeloading(); // fadeout loading
+                    $("#toPopup").fadeIn(0500); // fadein popup div
+                    $("#backgroundPopup").css("opacity", "0.7"); // css opacity, supports IE7, IE8
+                    $("#backgroundPopup").fadeIn(0001);
+                    popupStatus = 1; // and set value to 1
+                }
+            }
+
+            function disablePopup() {
+                if (popupStatus == 1) { // if value is 1, close popup
+                    $("#toPopup").fadeOut("normal");
+                    $("#backgroundPopup").fadeOut("normal");
+                    popupStatus = 0;  // and set value to 0
+                }
+            }
+            /************** end: functions. **************/
+    </script>
+}

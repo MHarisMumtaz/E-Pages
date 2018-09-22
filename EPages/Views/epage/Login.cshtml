@@ -1,0 +1,74 @@
+﻿@{
+    ViewBag.Title = "Login";
+    Layout = "~/Views/Shared/_MPage.cshtml";
+}
+@model EPages.ViewModel.UserViewModel
+
+<div class="row" style="margin-top: 5%; margin-left: 3%; margin-bottom: 14%;">
+    <div class="module module-login span4 offset4">
+ @using (Html.BeginForm("Login", "epage", FormMethod.Post, new { @class = "form-vertical" }))
+                    {
+      
+            <div class="module-head">
+                <h3>Sign In</h3>
+            </div>
+            <div class="module-body">
+                <div style="margin-bottom: 2%; display: inline-block;">
+                    <label class="control-label" for="basicinput">Select User</label>
+                    <div class="controls">
+                        @Html.DropDownListFor(model => model.selecteduser, new SelectList(EPages.ViewModel.UserViewModel.Getusers(), "value", "text"))
+                    </div>
+                </div>
+
+                <div class="control-group">
+                    <div class="controls row-fluid">
+                     @Html.LabelFor(model => Model.Email, new { @class = "control-label" })
+                        @Html.TextBoxFor(model => Model.Email, new { @class = "span12",@id="inputEmail", @type = "Email" ,@required="required" })
+                       
+                       
+                       
+                    </div>
+
+                    <br />
+                    <div class="controls row-fluid">
+                        @Html.LabelFor(model => Model.Pass, new { @class = "control-label" })
+                        @Html.PasswordFor(model => Model.Pass, new { @class = "span12", @type = "password", @required = "required" })
+                       
+                       
+                       
+                    </div>
+                </div>
+            </div>
+            <div class="module-foot">
+                <div class="control-group">
+                    <div class="controls clearfix">
+                        <button type="submit" class="btn btn-primary pull-right">Login</button>
+                        <label class="checkbox">
+                            <input type="checkbox">
+                            Remember me
+                        </label>
+                    </div>
+                </div>
+               
+                <div class="control-group">
+                    <div class="controls clearfix">
+                        <a id="hidennav" class="btn btn-primary pull-right" href="@Url.Action("Signup", "PEpage")">
+                            SignUp
+                        </a>
+                        <label class="pull-left">Don't have an acount SignUp here</label>
+                    </div>
+                </div>
+            </div>
+ }
+
+    </div>
+</div>
+@section Mfooter{
+<script>
+    $('#butnhide').hide();
+
+    $('#some').autocomplete({
+        source: '@Url.Action("Autocomplete","epage")'
+    });
+</script>
+    }

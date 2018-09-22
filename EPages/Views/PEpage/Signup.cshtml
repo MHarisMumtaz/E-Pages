@@ -1,0 +1,169 @@
+﻿@{
+    ViewBag.Title = "Signup";
+    Layout = "~/Views/Shared/_MPage.cshtml";
+}
+
+@model EPages.ViewModel.UserViewModel
+
+
+<div class="wrapper">
+    <div class="container">
+        <div class="content">
+
+            <div class="module">
+                <div class="module-head">
+                    <h3>SignUp</h3>
+                </div>
+                <div class="module-body" style="padding-left: 7%; padding-top: 6%;">
+
+                    @using (Html.BeginForm("Signup", "epage", FormMethod.Post, new { @class = "form-horizontal row-fluid" }))
+                    {
+                         <div style="margin-bottom: 2%;">
+                            
+                             <label id="selecteduser" class="control-label">Select UserType</label>
+                            <div class="controls">
+                                @Html.DropDownListFor(model => model.selecteduser, new SelectList(EPages.ViewModel.UserViewModel.Getusers(), "value", "text"))
+                            
+                            </div>
+                        </div>
+                        
+                        <div style="display: inline-block; margin-bottom: 2%;">
+                            @Html.LabelFor(model => Model.FirstName, new { @class = "control-label" })
+                            
+                            <div class="controls">
+                                @Html.TextBoxFor(model => Model.FirstName, new { @class = "span8", @style = "width: 100%", @required = "required" })
+                            
+                            </div>
+                        </div>
+
+                        <div style="display: inline-block; margin-bottom: 2%;">
+                            
+                            @Html.LabelFor(model => Model.LastName, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => Model.LastName, new { @class = "span8", @style = "width: 100%", @required = "required" })
+                            
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 2%;">
+                            
+                            @Html.LabelFor(model => Model.Email, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => Model.Email, new { @class = "span8", @type = "Email", @required = "required" })
+                            
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 2%;">
+                            @Html.LabelFor(model => Model.Number, new { @class = "control-label" })
+                            
+                            <div class="controls">
+                                @Html.TextBoxFor(model => Model.Number, new { @class = "span8", @type = "number", @required = "required" })
+                            
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 2%;">
+                            @Html.LabelFor(model => Model.Pass, new { @class = "control-label" })
+                            
+                            <div class="controls">
+                                @Html.PasswordFor(model => Model.Pass, new { @class = "span8", @type = "password", @required = "required" })
+                               
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 2%;">
+                            <label class="control-label" for="basicinput">Confirm Password</label>
+                            <div class="controls">
+                                <input id="basicinput" placeholder="Renter Password" class="span8" type="password" required>
+                            </div>
+                        </div>
+
+
+                        <div style="margin-bottom: 2%;">
+                            @Html.LabelFor(model => Model.UAddress, new { @class = "control-label" })
+                        
+                            <div class="controls">
+                                @Html.TextBoxFor(model => Model.UAddress, new { @class = "span8", @required = "required" })
+                               
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 2%; display: inline-block;">
+                            <label class="control-label" for="basicinput">Country</label>
+                            <div class="controls">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle btn cont" data-toggle="dropdown" href="#" id="-1">Select Country<i class="icon-caret-down"></i></a>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                        @foreach (var country in EPages.Models.Country.GetCountries())
+                                        {
+                                            <li><a id="@country.CountryID" onclick="getcities(this)">@country.CountryDesc</a></li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 2%;">
+                            @Html.LabelFor(model => Model.CityID, new { @class = "control-label" })
+
+                            <div class="controls">
+                                    @Html.DropDownListFor(model => model.CityID, new SelectList(EPages.ViewModel.CityViewModel.Getdefaultcity(), "value", "text"), new { @class = "citi", @required = "required" })
+                            </div>
+                        </div>
+
+
+
+                        <div style="margin-bottom: 2%;">
+                            
+                            @Html.LabelFor(model => Model.GenderID, new { @class = "control-label" })
+                            <div class="controls">
+
+                                @Html.DropDownListFor(model => model.GenderID, new SelectList(EPages.ViewModel.GenderViewModel.GetGender(), "value", "text"), new { @required = "required" })
+                               
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 2%; display: inline-block;">
+                            <div class="controls">
+                                <button type="submit" name="usersign" class="btn btn-large btn-inverse">Sign Up</button>&nbsp;&nbsp;&nbsp;
+                             
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+
+
+        </div>
+
+    </div>
+    <!--/.content-->
+
+</div>
+<!--/.wrapper-->
+@section Mfooter{
+    <script type="text/javascript">
+
+        $('#butnhide').hide();
+
+        function getcities(data) {
+            $(".cont").text($(data).text());
+            $id = $(data).attr("id");
+
+            getcity($id);
+        }
+        //ajax directly
+        function getcity(ID) {
+            $.getJSON('/api/FetchWA/Gciti/'+$id, function (Data) {
+                $(".citi").empty();
+                $(Data).each(function (i, item) {
+
+                    $(".citi").append('<option value="' + item.CityID + '">' + item.CityDesc + '</option>');
+                });
+            });
+          
+        }
+    </script>
+}

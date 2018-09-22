@@ -1,0 +1,169 @@
+﻿
+@{
+    ViewBag.Title = "CreatePage";
+    Layout = "~/Views/Shared/_user.cshtml";
+}
+
+@model EPages.ViewModel.PageViewModel
+
+
+<div class="content">
+
+
+    <div class="module">
+        <div class="module-head">
+            <h3>Create Page</h3>
+        </div>
+        <div class="module-body">
+
+
+@using (Html.BeginForm("NewPage", "PEpage", FormMethod.Post, new { @class = "form-horizontal row-fluid" }))
+                    {
+
+           
+                <div style="margin-bottom:2%;">
+                 @Html.LabelFor(model => model.title, new { @class = "control-label" })
+           
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.title, new { @class = "span8", @required = "required" })
+                       
+                        <div class="alert alert-error" style="display:inline-block;">
+                            @Html.ValidationMessageFor(model => model.title)
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:2%;">
+                    @Html.LabelFor(model => model.addressdetail.AddrDesc, new { @class = "control-label" })
+                   
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.addressdetail.AddrDesc, new { @class = "span8", @required = "required" })
+                    
+                        <div class="alert alert-error" style="display:inline-block;">
+                            @Html.ValidationMessageFor(model => model.addressdetail.AddrDesc)
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:2%;">
+                    @Html.LabelFor(model => model.contactdetail.ContactDesc, new { @class = "control-label" })
+                  
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.contactdetail.ContactDesc, new { @class = "span8", @type = "number", @required = "required" })
+                    
+                        <div class="alert alert-error" style="display:inline-block;">
+                            @Html.ValidationMessageFor(model => model.contactdetail.ContactDesc)
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:2%;">
+                    @Html.LabelFor(model => model.CategoryID, new { @class = "control-label" })
+                  
+                    <div class="controls">
+                        @Html.DropDownListFor(model => model.CategoryID, new SelectList(EPages.ViewModel.PageCategoryViewModel.GetCategory(), "value", "text"), new { @required="required"}) 
+                     
+                        @Html.ValidationMessageFor(model => model.CategoryID)
+                    </div>
+                </div>
+
+                <div style="margin-bottom:2%;">
+                    @Html.LabelFor(model => model.CoverURL, new { @class = "control-label", @style = "display:inline-block;" })
+                  
+                    <div class="controls">
+                       
+                        @Html.TextBoxFor(model => model.CoverURL, new { @class = "span8", @type = "file", @id = "pimg", @required = "required" })
+                    </div>
+                    <div class="btn-group controls">
+                        <input type="button" id="uploadimg" value="Upload" class="btn btn-large btn-info" />
+                    </div>
+                </div>
+                <div style="margin-bottom:2%;">
+                    <h4 style="color:#EEE;">Payment Info (Required)</h4>
+                    @Html.LabelFor(model => model.accountdetail.AccountNo, new { @class = "control-label" })
+                  
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.accountdetail.AccountNo, new { @class = "span8", @required = "required" })
+                        <div class="alert alert-error" style="display:inline-block;">
+                            @Html.ValidationMessageFor(model => model.accountdetail.AccountNo)
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:2%;">
+                    <h4 style="color:#EEE;">Social Info (Optional)</h4>
+                    @Html.LabelFor(model => model.socialinfo.FB, new { @class = "control-label" })
+                  
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.socialinfo.FB, new { @class = "span8",@type="url" })
+                         
+                    </div>
+                    <br />
+                    @Html.LabelFor(model => model.socialinfo.Twitter, new { @class = "control-label" })
+                  
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.socialinfo.Twitter, new { @class = "span8", @type = "url" })
+                    
+                    </div>
+                    <br />
+                    @Html.LabelFor(model => model.socialinfo.LinkedIn, new { @class = "control-label" })
+                 
+                    <div class="controls">
+                        @Html.TextBoxFor(model => model.socialinfo.LinkedIn, new { @class = "span8", @type = "url" })
+                   
+                    </div>
+                </div>
+
+                <div style="margin-bottom:2%;">
+                    @Html.LabelFor(model => model.Description, new { @class = "control-label" })
+                
+                    <div class="controls">
+                        @Html.TextAreaFor(model => model.Description, new { @class = "span8", @row = "5", @cols = "50", @style = "resize:none;", @required = "required" })
+                     
+                        <div class="alert alert-error" style="display:inline-block;">
+                            @Html.ValidationMessageFor(model => model.Description)
+                        </div>
+                    </div>
+                </div>
+
+                <div style="margin-bottom:2%;">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-large btn-inverse">Create Page</button>
+                    </div>
+                </div>
+            
+}
+        </div>
+    </div>
+
+
+
+</div>
+@section footer{
+<script type="text/javascript">
+
+    $('#uploadimg').on('click', function () {
+
+        var data = new FormData();
+
+        var files = $("#pimg").get(0).files;
+      
+        // Add the uploaded image content to the form data collection
+        if (files.length > 0) {
+            data.append("UploadedImage", files[0]);
+        }
+        // Make Ajax request with the contentType = false, and procesDate = false
+        var ajaxRequest = $.ajax({
+            type: "POST",
+            url: "/api/FetchWA/uploadfile",
+            contentType: false,
+            processData: false,
+            data: data,
+            success: function (data) {
+                setTimeout(function () { alert("Picture Successfully uploaded"); }, 2000);
+            }
+        });
+    });
+
+</script>
+}

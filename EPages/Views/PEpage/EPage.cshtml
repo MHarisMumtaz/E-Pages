@@ -1,0 +1,263 @@
+﻿@{
+    ViewBag.Title = "EPage";
+    Layout = "~/Views/Shared/_MPage.cshtml";
+}
+@model EPages.ViewModel.PageViewModel
+
+<div class="stream-attachment photo" style="box-shadow: 0px 1px 7px #1B788A;">
+    <div class="responsive-photo">
+        <img src="~/images/@Model.CoverURL" alt="">
+    </div>
+</div>
+<ul class="widget widget-usage unstyled" id="ShopNames">
+    <li style="text-align: center;">
+        <div id="shopname">
+            <h2 style="color: white;"> @Model.title </h2>
+        </div>
+        <input id="pid" type="hidden" value="@Model.Page_ID"/>
+       
+    </li>
+</ul>
+<div class="wrapper">
+    <div class="container">
+        <div class="spanme">
+            <div class="content">
+                <div class="module">
+                    <div class="module-body">
+
+                        <ul class="profile-tab nav nav-tabs">
+                            <li class=""><a href="#activity" data-toggle="tab">Information</a></li>
+                            <li class="active"><a href="#friends" data-toggle="tab">Products</a></li>
+                        </ul>
+                        <div class="profile-tab-content tab-content">
+                            <div class="tab-pane fade" id="activity">
+                                <div class="stream-list">
+                                    <div class="media stream">
+                                        <div class="module">
+                                            <div class="module-head">
+                                                <h3 style="display: inline-block;">
+                                                    AboutUS
+                                                </h3>
+                                            
+                                            </div>
+                                            <div class="module-body">
+                                                <p id="desc" style="max-width: 50%; text-align: justify;">
+                                                @Model.Description 
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div class="module">
+                                            <div class="module-head">
+                                                <h3 style="display: inline-block;">
+                                                    Contact Details
+                                                </h3>
+                                           
+                                            </div>
+                                            <div class="module-body">
+                                                <div style="display: inline-block;">
+                                                    <dl>
+                                                        <dt>Address</dt>
+                                                        <dd id="addr">
+                                                         <p>   @Model.addressdetail.AddrDesc</p>
+                                                          
+                                                        </dd>
+                                                        <dt>Contact Number</dt>
+                                                        <dd id="cont">
+                                                          <p>  @Model.contactdetail.ContactDesc</p>
+                                                    
+                                                        </dd>
+                                                    </dl>
+                                                </div>
+
+                                                <div style="display: inline-block;" class="pull-right">
+                                                    <h3 style="color: white;">Join On</h3>
+                                                    <a href="@Model.socialinfo.FB" style="width: 20px; margin-right: 5%; height: 20px; padding: 4%; border-radius: 3px; border: 1px solid black;">
+                                                        <i class="icon-facebook"></i>
+                                                    </a>
+                                                    <a href="@Model.socialinfo.Twitter" style="width: 20px; margin-right: 5%; height: 20px; padding: 4%; border-radius: 3px; border: 1px solid black;">
+                                                        <i class="icon-twitter"></i>
+                                                    </a>
+                                                    <a href="@Model.socialinfo.LinkedIn" style="width: 20px; margin-right: 5%; height: 20px; padding: 4%; border-radius: 3px; border: 1px solid black;">
+                                                        <i class="icon-linkedin"></i>
+                                                    </a>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <!--/.stream-list-->
+                            </div>
+                            <div class="tab-pane fade active in" id="friends">
+                                <div class="module-option clearfix">
+                                    
+                                    <div class="btn-group pull-right">
+                                        <button type="button" class="btn btn-large btn-info" onclick="showAddItemBox()">
+                                            <div id="angicon" class="icon-angle-down"></div>
+                                            Add Items
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="additem">
+                                    <form id="Item" name="Item" action="/api/FetchWA/newitem" method="post">
+                                        <div class="control-group">
+                                            <label class="control-label" for="basicinput">Item Name</label>
+                                            <input type="hidden" value="0" id="ItemID" name="ItemID" />
+                                            <input type="hidden" value="@Model.Page_ID" id="Page_ID" name="Page_ID" />
+                                            <div class="controls">
+                                                <input id="basicinput" name="ItemName" maxlength="20" placeholder="Type something here..." class="span8" type="text" style="width: 95%; height: 10%;">
+                                            </div>
+                                            <div style="display:inline-block;">
+                                                <input id="ItemPic" type="file" name="ItemPic" accept="image/*" class="upload"/>
+                                                <div class="btn-group controls">
+                                                    <input type="button" id="uploadimg" value="Upload" class="btn btn-large btn-info" />
+                                                </div>
+                                              
+                                            </div>
+                                            <label class="control-label" for="basicinput">Quantity</label>
+                                            <div class="controls">
+                                                <input id="ItemQuantity" name="ItemQuantity" placeholder="Type something here..." class="span8" type="number" style="width: 95%; height: 10%;">
+                                            </div>
+                                            <label class="control-label" for="basicinput">Price</label>
+                                            <div class="controls">
+                                                <input id="ItemPrice" name="ItemPrice" placeholder="Type something here..." class="span8" type="number" style="width: 95%; height: 10%;">
+                                            </div>
+                                            <label class="control-label" for="basicinput">Description (Required)</label>
+                                            <div class="controls">
+                                                <textarea class="span8" id="ItemDesc" name="ItemDesc" rows="3" maxlength="200" cols="18" style="resize: none; width: 95%;"></textarea>
+                                            </div>
+                                            <br />
+                                            <div class="btn-group controls">
+                                                <input type="submit" name="Postreq" id="fethitem" value="Add Items" class="btn btn-large btn-info" />
+                                            </div>
+                                        </div>
+                                        </form>
+                                    </div>
+
+
+
+
+                                <div class="module-body" id="iit">
+                                
+                                    <br>
+                                   
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <!--/.module-body-->
+                </div>
+                <!--/.module-->
+            </div>
+            <!--/.content-->
+        </div>
+    </div>
+    <!--/.content-->
+
+</div>
+<!--/.wrapper-->
+@section Mfooter{
+<script type="text/javascript">
+    $('.additem').hide();
+    $('#hidennav').hide();
+    $('#butnhide').hide();
+    $('#searchbox').hide();
+    var $count = 1;
+    var $txt = null;
+    var $conttxt = null;
+
+    var $desctxt = null;
+
+    $('#change').append("<li class='nav-user dropdown'><a href='' class='dropdown-toggle' data-toggle='dropdown'>@ViewBag.name<b class='caret'></b></a><ul class='dropdown-menu'><li><a href='@Url.Action("UserDashboard","epage")'>Profile</a></li><li><a href='@Url.Action("settings", "epage")'>Account Settings</a></li><li class='divider'></li><li><a href='@Url.Action("Index", "epage")'>Logout</a></li></ul></li>");
+    function showAddItemBox() {
+        $('.additem').slideToggle();
+        if ($count === 1) {
+            $('#angicon').removeClass('icon-angle-down');
+            $('#angicon').addClass('icon-angle-up');
+            $count = 2;
+        } else {
+            $('#angicon').addClass('icon-angle-down');
+            $('#angicon').removeClass('icon-angle-up');
+            $count = 1;
+        }
+    }
+
+
+    window.onload = mytim();
+
+    $c = 2;
+    $ii = 0;
+
+    function mytim() {
+        setTimeout(function () {  
+            var $pgid = $("#pid").val();
+            $.getJSON('/api/FetchWA/GItems/' + $pgid, function (Data) {
+                $('#iit').empty();
+                $(Data).each(function (i, item) {
+                    if ($c == 2) {
+                        $ii = i;
+                        $('#iit').append('<div class="row-fluid" id="' + $ii + '"><div class="span6"><div class="media user"><a class="media-item pull-left" href="#"><img src="/images/' + item.ItemPic + '"></a><div class="media-body"><h3 class="media-title" style="color: white;">' + item.ItemName + '</h3><p><small class="muted">' + item.ItemDesc + '</small></p><h5 style="text-decoration: underline; color: white;">Quantity ' + item.ItemQuantity + '</h5><h5 style="text-decoration: underline; color: white;">Price:' + item.ItemPrice + '$</h5><div class="media-option btn-group shaded-icon"></div><div class="media-option btn-group shaded-icon"></div></div></div></div></div>');
+                        $c = $c - 1;
+                    } else {
+                        $('#' + $ii).append('<div class="span6"><div class="media user"><a class="media-item pull-left" href="#"><img src="' + "/images/" + item.ItemPic + '"></a><div class="media-body"><h3 class="media-title" style="color: white;">' + item.ItemName + '</h3><p><small class="muted">' + item.ItemDesc + '</small></p><h5 style="text-decoration: underline; color: white;">Quantity ' + item.ItemQuantity + '</h5><h5 style="text-decoration: underline; color: white;">Price:' + item.ItemPrice + '$</h5><div class="media-option btn-group shaded-icon"><div class="media-option btn-group shaded-icon"></div></div></div></div>');
+                        $c = 2;
+                    }
+                })
+            });
+        }, 1000);
+    }
+    
+
+    
+        $('#uploadimg').on('click', function () {
+
+            var data = new FormData();
+
+            var files = $("#ItemPic").get(0).files;
+
+            // Add the uploaded image content to the form data collection
+            if (files.length > 0) {
+                data.append("UploadedImage", files[0]);
+            }
+                // Make Ajax request with the contentType = false, and procesDate = false
+                var ajaxRequest = $.ajax({
+                    type: "POST",
+                    url: "/api/FetchWA/uploadfile",
+                    contentType: false,
+                    processData: false,
+                    data: data,
+                    success: function(data)
+                    {
+                        setTimeout(function () { alert("picture Successfully uploaded"); }, 2000);
+                    }
+                });
+            });
+ 
+        var Items = new Object();
+        Items.ItemID = "12";
+        Items.PageID = $("#pid").val();
+        Items.ItemName = $('#ItemName').val();
+        Items.ItemPrice = $("#ItemPrice").val();
+        Items.ItemDesc = $("#ItemDesc").val();
+        Items.ItemQuantity = $("#ItemQuantity").val();
+        Items.ItemPic = $("#ItemPic").val();
+     
+
+
+       
+      
+        $("#Item").submit(function () {
+
+            var jqxhr = $.post('/api/FetchWA/newitem', Items.serialize()).success(function (Data) {
+              
+                })
+                .error(function () {
+                    alert("Error posting the update.");
+                });
+            location.reload();
+        });
+</script>
+
+}

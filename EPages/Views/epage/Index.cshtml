@@ -1,0 +1,145 @@
+﻿@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_MPage.cshtml";
+}
+
+<div class="wrapper">
+    <div class="container">
+        <div class="module">
+            <div class="module-head">
+                <h3>
+                    All Pages
+                </h3>
+            </div>
+            <div class="module-option clearfix">
+                <div class="controls">
+                    <div class="dropdown">
+                        <a class="dropdown-toggle btn" id="cont" data-toggle="dropdown" href="#">Select Category<i class="icon-caret-down"></i></a>
+                        <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                            @foreach (var category in EPages.ViewModel.PageCategoryViewModel.GetCategory())
+                            {
+                                <li><a id="@category.Value" onclick="getpages(this)">@category.Text</a></li>
+                            }
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div style="padding-left:6%;" class="module-body" id="mani">
+                <!--start row fluid-->
+                <div class="row-fluid">
+                    @foreach (var page in EPages.Models.Page.FetchTop4ByCategory(1))
+                    {
+                        <div class="span90">
+                            <div class="media2 user">
+                                <a href="@Url.Action("ShowPage","epage", new { id = page.Page_ID})">
+                                    <img src="~/images/@page.P_Cover" class="shopcover">
+                                </a>
+                                <div class="media-body">
+                                    <h3 class="media-title" style="color:white;">
+                                       @page.title
+                                    </h3>
+                                    <p style="max-height:20%;">
+                                        <small class="muted">
+                                          @page.P_Desc
+                                        </small>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+                <!--end row fluid-->
+                <!--start row fluid-->
+                <div class="row-fluid">
+                    @foreach (var page in EPages.Models.Page.FetchTop4ByCategory(3))
+                    {
+                        <div class="span90">
+                            <div class="media2 user">
+                                <a href="@Url.Action("ShowPage","epage", new { id = page.Page_ID})">
+                                    <img src="~/images/@page.P_Cover" class="shopcover">
+                                </a>
+                                <div class="media-body">
+                                    <h3 class="media-title" style="color:white;">
+                                        @page.title
+                                    </h3>
+                                    <p style="max-height:20%;">
+                                        <small class="muted">
+                                            @page.P_Desc
+                                        </small>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+                <!--end row fluid-->
+                <!--start row fluid-->
+                <div class="row-fluid">
+                    @foreach (var page in EPages.Models.Page.FetchTop4ByCategory(4))
+                    {
+                        <div class="span90">
+                            <div class="media2 user">
+                                <a href="@Url.Action("ShowPage","epage", new { id = page.Page_ID})">
+                                    <img src="~/images/@page.P_Cover" class="shopcover">
+                                </a>
+                                <div class="media-body">
+                                    <h3 class="media-title" style="color:white;">
+                                        @page.title
+                                    </h3>
+                                    <p style="max-height:20%;">
+                                        <small class="muted">
+                                            @page.P_Desc
+                                        </small>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                    }
+                </div>
+                <!--end row fluid-->
+            </div>
+        </div>
+    </div>
+    <!--/.content-->
+
+</div>
+<!--/.wrapper-->
+@section Mfooter
+{
+<script type="text/javascript">
+
+    $('#some').autocomplete({
+        source: '@Url.Action("Autocomplete","epage")'
+    });
+    function getpages(data) {
+        $("#cont").text($(data).text());
+        $id = $(data).attr("id");
+        pages($id);
+    }
+    $icount = 0;
+    $chk = 4;
+    //ajax directly
+    function pages(ID) {
+        $.getJSON('/api/FetchWA/GetCatPages/' + ID, function (Data) {
+            $("#mani").empty();
+            $chk = 4;
+            $(Data).each(function (i, item) {
+                if ($chk == 4) {
+                    $icount = i;
+                    $("#mani").append('<div class="row-fluid" id="p' + $icount + '"><div class="span90"><div class="media2 user"><a href="/epage/ShowPage/' + item.Page_ID + '"><img src="/images/' + item.P_Cover + '" class="shopcover"></a><div class="media-body"><h3 class="media-title" style="color:white;">' + item.title + '</h3><p style="max-height:20%;"><small class="muted">' + item.P_Desc + '</small></p></div></div></div></div>');
+                    $chk = $chk - 1;
+                } else {
+                    $("#p" + $icount).append('<div class="span90"><div class="media2 user"><a href="/epage/ShowPage/'+item.Page_ID+'"><img src="/images/' + item.P_Cover + '" class="shopcover"></a><div class="media-body"><h3 class="media-title" style="color:white;">' + item.title + '</h3><p style="max-height:20%;"><small class="muted">' + item.P_Desc + '</small></p></div></div></div>');
+                    $chk = $chk - 1;
+                }
+                if ($chk == 0) {
+                    $chk = 4;
+                }
+            });
+        });
+    }
+    </script>
+}

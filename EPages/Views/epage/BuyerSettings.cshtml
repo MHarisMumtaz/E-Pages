@@ -1,0 +1,137 @@
+﻿@{
+    ViewBag.Title = "BuyerSettings";
+    Layout = "~/Views/Shared/_MPage.cshtml";
+}
+@model EPages.ViewModel.UserViewModel
+
+<div class="wrapper">
+    <div class="container">
+        <div class="content">
+
+            <div class="module">
+                <div class="module-head">
+                    <h3>Settings</h3>
+                </div>
+                <div class="module-body" style="padding-left: 7%; padding-top: 6%;">
+
+
+                    @using (Html.BeginForm("settings", "epage", FormMethod.Post, new { @class = "form-horizontal row-fluid" }))
+                    {
+                        <div style="margin-bottom: 2%; display:inline;">
+                            @Html.LabelFor(model => Model.Email, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => Model.Email, new { @class = "span8", @type = "Email", @id = "em", @required = "required" })
+                                <button id="editbtn" type="button" class="btn btn-small btn-primary" onclick="">
+                                    <div class="icon-edit"></div>
+                                </button>
+                            </div>
+                        </div>
+                        <br />
+                        <div style="margin-bottom: 2%;">
+                            @Html.LabelFor(model => Model.Number, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => Model.Number, new { @class = "span8", @type = "number", @required = "required" })
+
+                                <button id="editbtn" type="button" class="btn btn-small btn-primary" onclick="">
+                                    <div class="icon-edit"></div>
+                                </button>
+                            </div>
+
+                        </div>
+
+                        <div style="margin-bottom: 2%;">
+                            @Html.LabelFor(model => Model.Pass, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.PasswordFor(model => Model.Pass, new { @class = "span8", @type = "password", @required = "required" })
+                                <button id="description-button" type="button" class="btn btn-small btn-primary" onclick="">
+                                    <div class="icon-edit"></div>
+                                </button>
+                            </div>
+
+                        </div>
+
+
+                        <div style="margin-bottom: 2%;">
+                            @Html.LabelFor(model => Model.UAddress, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.TextBoxFor(model => Model.UAddress, new { @class = "span8", @required = "required" })
+                                <button id="description-button" type="button" class="btn btn-small btn-primary" onclick="">
+                                    <div class="icon-edit"></div>
+                                </button>
+                            </div>
+
+
+                        </div>
+
+                        <div style="margin-bottom: 2%;" style="display: inline-block;">
+                            <label class="control-label" for="basicinput">Country</label>
+                            <div class="controls">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle btn cont" data-toggle="dropdown" href="#">Select Country<i class="icon-caret-down"></i></a>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                        @foreach (var country in EPages.Models.Country.GetCountries())
+                                        {
+                                            <li><a id="@country.CountryID" onclick="getcities(this)">@country.CountryDesc</a></li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 2%;" style="display: inline-block;">
+                            @Html.LabelFor(model => Model.CityID, new { @class = "control-label" })
+                            <div class="controls">
+                                @Html.DropDownListFor(model => model.CityID, new SelectList(EPages.ViewModel.CityViewModel.Getdefaultcity(), "value", "text"), new { @class = "citi", @required = "required" })
+                            </div>
+                        </div>
+
+                        <div style="margin-bottom: 2%;" style="display: inline-block;">
+                            <div class="controls">
+                                <button type="submit" class="btn btn-large btn-inverse">Save</button>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+@section Mfooter{
+    <script type="text/javascript">
+
+        $('.additem').hide();
+        $('#hidennav').hide();
+        $('#butnhide').hide();
+        var $count = 1;
+        var $txt = null;
+        var $conttxt = null;
+
+        var $desctxt = null;
+
+        $('#change').append("<li class='nav-user dropdown'><a href='' class='dropdown-toggle' data-toggle='dropdown'>@ViewBag.name<b class='caret'></b></a><ul class='dropdown-menu'><li><a href='@Url.Action("BuyDashboard", "epage")'>Profile</a></li><li><a href='@Url.Action("settings", "epage")'>Account Settings</a></li><li class='divider'></li><li><a href='#'>Logout</a></li></ul></li>");
+
+
+
+
+        function getcities(data) {
+            $(".cont").text($(data).text());
+            $id = $(data).attr("id");
+
+            getcity($id);
+        }
+        //ajax directly
+        function getcity(ID) {
+            $.getJSON('/api/FetchWA/Gciti/' + $id, function (Data) {
+                $(".citi").empty();
+                $(Data).each(function (i, item) {
+
+                    $(".citi").append('<option value="' + item.CityID + '">' + item.CityDesc + '</option>');
+                });
+            });
+        }
+
+    </script>
+}

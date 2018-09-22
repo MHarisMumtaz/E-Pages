@@ -1,0 +1,116 @@
+﻿@{
+    ViewBag.Title = "PageSettings";
+    Layout = "~/Views/Shared/_user.cshtml";
+}
+@model EPages.ViewModel.PageViewModel
+
+<div class="module message">
+    <div class="module-head">
+        <h3>Page Settings</h3>
+    </div>
+    <div class="module-body" style="padding-left: 7%; padding-top: 6%;">
+
+
+            @using (Html.BeginForm("PageUpdate", "epage", FormMethod.Post, new { @class = "form-horizontal row-fluid" }))
+            {
+     
+                @Html.HiddenFor(model=>model.Page_ID)
+    <div style="margin-bottom:2%;">
+        @Html.LabelFor(model => model.title, new { @class = "control-label" })
+
+        <div class="controls">
+            @Html.TextBoxFor(model => model.title, new { @class = "span8", @value = Model.title, @required = "required" })
+           
+        </div>
+    </div>
+
+    <div style="margin-bottom:2%;">
+        @Html.LabelFor(model => model.addressdetail.AddrDesc, new { @class = "control-label" })
+
+        <div class="controls">
+            @Html.TextBoxFor(model => model.addressdetail.AddrDesc, new { @class = "span8", @value = Model.addressdetail.AddrDesc, @required = "required" })
+
+        </div>
+    </div>
+
+    <div style="margin-bottom:2%;">
+        @Html.LabelFor(model => model.contactdetail.ContactDesc, new { @class = "control-label" })
+
+        <div class="controls">
+            @Html.TextBoxFor(model => model.contactdetail.ContactDesc, new { @class = "span8", @type = "number", @value = Model.contactdetail.ContactDesc, @required = "required" })
+
+        </div>
+    </div>
+
+    <div style="margin-bottom:2%;">
+        @Html.LabelFor(model => model.CategoryID, new { @class = "control-label" })
+
+        <div class="controls">
+            @Html.DropDownListFor(model => model.CategoryID, new SelectList(EPages.ViewModel.PageCategoryViewModel.GetCategory(), "value", "text"), new { @required="required"})
+
+       
+        </div>
+    </div>
+
+    <div style="margin-bottom:2%;">
+        @Html.LabelFor(model => model.CoverURL, new { @class = "control-label" })
+
+        <div class="controls">
+            
+            @Html.TextBoxFor(model => model.CoverURL, new { @class = "span8", @type = "file" })
+            @Html.HiddenFor(model => model.CoverURL, new { @value=Model.CoverURL })
+          
+        </div>
+    </div>
+    <div style="margin-bottom:2%;">
+      
+        @Html.LabelFor(model => model.accountdetail.AccountNo, new { @class = "control-label" })
+
+        <div class="controls">
+            @Html.TextBoxFor(model => model.accountdetail.AccountNo, new { @class = "span8", @value = Model.accountdetail.AccountNo, @required = "required" })
+          
+        </div>
+    </div>
+
+    <div style="margin-bottom:2%;">
+      
+        @Html.LabelFor(model => model.socialinfo.FB, new { @class = "control-label" })
+
+        <div class="controls">
+            @Html.TextBoxFor(model => model.socialinfo.FB, new { @class = "span8", @type = "url", @value = Model.socialinfo.FB, @required = "required" })
+
+        </div>
+        <br />
+        @Html.LabelFor(model => model.socialinfo.Twitter, new { @class = "control-label" })
+
+        <div class="controls">
+            @Html.TextBoxFor(model => model.socialinfo.Twitter, new { @class = "span8", @type = "url", @value = Model.socialinfo.Twitter, @required = "required" })
+
+        </div>
+        <br />
+        @Html.LabelFor(model => model.socialinfo.LinkedIn, new { @class = "control-label" })
+
+        <div class="controls">
+            @Html.TextBoxFor(model => model.socialinfo.LinkedIn, new { @class = "span8", @type = "url", @value = Model.socialinfo.LinkedIn, @required = "required" })
+
+        </div>
+    </div>
+
+    <div style="margin-bottom:2%;">
+        @Html.LabelFor(model => model.Description, new { @class = "control-label" })
+      
+        <div class="controls">
+            @Html.TextAreaFor(model => model.Description, new { @class = "span8", @row = "5", @cols = "50", @style = "resize:none;", @required = "required" })
+        </div>
+    </div>
+
+            <div style="margin-bottom:2%;">
+                    <div class="controls">
+                        <button type="submit" class="btn btn-large btn-primary">Save</button>
+                    </div>
+                </div>
+            }
+    </div>
+    <div class="module-foot">
+    </div>
+</div>

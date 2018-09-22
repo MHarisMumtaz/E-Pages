@@ -1,0 +1,89 @@
+﻿@{
+    ViewBag.Title = "UserDashboard";
+    Layout = "~/Views/Shared/_user.cshtml";
+}
+@model EPages.ViewModel.UserViewModel
+<div class="module message">
+    <div class="module-head">
+        <h3>DashBoard</h3>
+    </div>
+    <br />
+
+    <div class="control-group" style="display: inline-block; margin-left: 5%;">
+        <div class="controls">
+            <button id="delet" class="btn btn-large btn-danger" value="Delete">Delete</button>
+        </div>
+    </div>
+    
+    <br />
+    <div class="module-body">
+        <table class="table table-message">
+            <tbody>
+                <tr class="heading">
+                    <td class="cell-check"></td>
+                    <td class="cell-author hidden-phone hidden-tablet">
+                        Title
+                    </td>
+                    <td class="cell-author hidden-phone hidden-tablet">
+                        Category
+                    </td>
+                    <td class="cell-author hidden-phone hidden-tablet">
+                        Created Date
+                    </td>
+                </tr>
+
+               
+                @foreach (var item in Model.pages)
+                {
+                      
+                    <tr class="unread">
+                        <td class="cell-check">
+                            <input id="@item.Page_ID" name="chkbx" class="inbox-checkbox chk" type="checkbox">
+                        </td>
+                        <td class="cell-author hidden-phone hidden-tablet">
+                            @Html.ActionLink(item.title, "EePage", "PEpage", new { id = item.Page_ID }, null)
+                    
+                        </td>
+                        <td class="cell-author hidden-phone hidden-tablet">
+                          @item.CatDesc
+                        </td>
+                        <td class="cell-author hidden-phone hidden-tablet">
+                            @item.Date
+                               
+                                @Html.ActionLink("Edit", "editpage","epage",new { id=item.Page_ID},null)
+                    
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+    <div class="module-foot">
+    </div>
+
+</div>
+@section footer{
+<script type="text/javascript">
+
+    var pg = new Array();
+
+    $('.chk').on('click',function () { getpid(this) });
+    function getpid(dat)
+    {
+        $pid = $(dat).attr('id');
+        pg.push($pid);
+    }
+
+    $('#delet').on('click', function () { delpost() });
+
+    function delpost() {
+        if (pg.length != 0) {
+            var jqxhr = $.post('/api/FetchWA/delpage', { '': pg }).success(function () {
+               
+            }).error(function () {
+                alert("Error posting the update.");
+            });
+        }
+    }
+    </script>
+}

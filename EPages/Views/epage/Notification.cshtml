@@ -1,0 +1,137 @@
+﻿@{
+    ViewBag.Title = "Notification";
+    Layout = "~/Views/Shared/_user.cshtml";
+}
+
+@model EPages.ViewModel.UserViewModel
+
+<div class="module message">
+    <div class="module-head">
+        <h3>Notifications</h3>
+    </div>
+    <br />
+    <div class="module-body">
+        <table class="table table-message">
+            <tbody>
+                <tr class="heading">
+                    <td class="cell-check"></td>
+                    <td class="cell-author hidden-phone hidden-tablet">
+                       Page
+                    </td>
+                    <td class="cell-author hidden-phone hidden-tablet">
+                        Customer Name
+                    </td>
+                    <td class="cell-author hidden-phone hidden-tablet">
+                        Items
+                    </td>
+                    <td class="cell-author hidden-phone hidden-tablet">
+                        Quantity
+                    </td>
+                    <td class="cell-author hidden-phone hidden-tablet">
+                        Price
+                    </td>
+                    <td class="cell-author hidden-phone hidden-tablet">
+                     Address
+                    </td>
+
+                    <td class="cell-author hidden-phone hidden-tablet">
+                        Number
+                    </td>
+                    <td class="cell-author hidden-phone hidden-tablet">
+                        Order Date
+                    </td>
+                    <td class="cell-author hidden-phone hidden-tablet">
+                        Status
+                    </td>
+                </tr>
+                @foreach (var item in EPages.Models.NotifiedOrder.GetNotified(Model.UserID))
+                {
+                    <tr class="unread">
+                        <td class="cell-check">
+                            <input class="inbox-checkbox" type="checkbox">
+                        </td>
+                        <td class="cell-author hidden-phone hidden-tablet">
+                           @item.title
+                        </td>
+                        <td class="cell-author hidden-phone hidden-tablet">
+                           @item.FirstName @item.LastName
+                        </td>
+                        <td class="cell-author hidden-phone hidden-tablet">
+                            <div class="controls">
+                                <div class="dropdown">
+                                    <a class="dropdown-toggle btn" data-toggle="dropdown" href="#" id="@item.Page_ID@item.OrderID">Items<i class="icon-caret-down"></i></a>
+                                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                                        @foreach (var oitem in EPages.ViewModel.OrderDetailViewModel.GetOrderItems(item.OrderID, item.Page_ID))
+                                        {
+                                            <li id="@oitem.ItemID@item.OrderID" onclick="setdetails(this)">
+                                                <a id="nam_@oitem.ItemID@item.OrderID">@oitem.ItemName</a>
+                                                <input type="hidden" id="oid_@oitem.ItemID@item.OrderID" value="@item.OrderID" />
+                                                <input type="hidden" id="pagid_@oitem.ItemID@item.OrderID" value="@item.Page_ID" />
+                                                <input type="hidden" id="price_@oitem.ItemID@item.OrderID" value="@oitem.ItemPrice" />
+                                                <input type="hidden" id="dat_@oitem.ItemID@item.OrderID" value="@oitem.Odate" />
+                                                <input type="hidden" id="stat_@oitem.ItemID@item.OrderID" value="@oitem.Ostate" />
+                                                <input type="hidden" id="quan_@oitem.ItemID@item.OrderID" value="@oitem.Quantity" />
+                                            </li>
+                                        }
+                                    </ul>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="cell-author hidden-phone hidden-tablet">
+                            <p id="quantity_@item.Page_ID@item.OrderID"></p>
+                        </td>
+                        <td class="cell-author hidden-phone hidden-tablet">
+                            <p id="pric_@item.Page_ID@item.OrderID"></p>
+                        </td>
+                        <td class="cell-author hidden-phone hidden-tablet">
+                            @item.UAddress
+                        </td>
+                        <td class="cell-author hidden-phone hidden-tablet">
+                            @item.Number
+                        </td>
+                        <td class="cell-author hidden-phone hidden-tablet">
+                            <p id="dats_@item.Page_ID@item.OrderID"></p>
+                        </td>
+                        <td class="cell-author hidden-phone hidden-tablet">
+                            <p id="stats_@item.Page_ID@item.OrderID"></p>
+                        </td>
+                    </tr>
+                }
+               
+               
+            </tbody>
+        </table>
+    </div>
+    <div class="module-foot">
+    </div>
+</div>
+
+@section footer{
+<script type="text/javascript">
+
+    function setdetails(data) {
+
+        var $itid = $(data).attr('id');
+
+        var $name = $('#nam_' + $itid).text();
+
+        var $pid = $('#pagid_' + $itid).val();
+
+        var $oid = $('#oid_' + $itid).val();
+
+        var $price = $('#price_' + $itid).val();
+
+        var $qua = $('#quan_' + $itid).val();
+
+        var $dates = $('#dat_' + $itid).val();
+
+        var $status = $('#stat_' + $itid).val();
+
+        $('#' + $pid + '' + $oid).text($name);
+        $('#quantity_' + $pid + '' + $oid).text($qua).fadeIn();
+        $('#pric_' + $pid + '' + $oid).text($price).fadeIn();
+        $('#dats_' + $pid + '' + $oid).text($dates).fadeIn();
+        $('#stats_' + $pid + '' + $oid).text($status).fadeIn();
+    }
+    </script>
+}
